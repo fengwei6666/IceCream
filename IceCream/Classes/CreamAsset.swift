@@ -18,7 +18,7 @@ import CloudKit
 /// We choose the latter, that's storing it directly on the file system, storing paths to these files in the Realm.
 /// So this is the deal.
 public class CreamAsset: Object {
-    @Persisted private var uniqueFileName = ""
+    @Persisted private(set) var uniqueFileName = ""
     override public static func ignoredProperties() -> [String] {
         return ["filePath"]
     }
@@ -135,7 +135,7 @@ public class CreamAsset: Object {
     /// - Returns: The CreamAsset if creates successful
     public static func create(objectID: String, propName: String, url: URL, shouldOverwrite: Bool = true) -> CreamAsset? {
         let creamAsset = CreamAsset(objectID: objectID, propName: propName)
-        if shouldOverwrite {
+        if shouldOverwrite, FileManager.default.fileExists(atPath: creamAsset.filePath.path) {
             do {
                 try FileManager.default.removeItem(at: creamAsset.filePath)
             } catch {

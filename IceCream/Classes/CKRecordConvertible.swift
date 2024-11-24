@@ -161,6 +161,8 @@ extension CKRecordConvertible where Self: Object {
                 } else if objectName == CreamAsset.className(), let creamAsset = item as? CreamAsset {
                     // If object is CreamAsset, set record with its wrapped CKAsset value
                     r[prop.name] = creamAsset.asset
+                    r["uniqueFileName"] = creamAsset.uniqueFileName
+
                 } else if let owner = item as? CKRecordConvertible {
                     // Handle to-one relationship: https://realm.io/docs/swift/latest/#many-to-one
                     // So the owner Object has to conform to CKRecordConvertible protocol

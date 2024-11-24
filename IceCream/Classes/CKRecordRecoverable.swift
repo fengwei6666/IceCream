@@ -138,7 +138,14 @@ extension CKRecordRecoverable where Self: Object {
                 if let location = record.value(forKey: prop.name) as? CLLocation {
                     recordValue = CreamLocation.make(location: location)
                 } else if let asset = record.value(forKey: prop.name) as? CKAsset {
-                    recordValue = CreamAsset.parse(from: prop.name, record: record, asset: asset)
+                    var fileName = prop.name
+                    if let fn = record.value(forKey: "uniqueFileName") as? String {
+                        let arr = fn.components(separatedBy: "_")
+                        if arr.count == 2 {
+                            fileName = arr[1]
+                        }
+                    }
+                    recordValue = CreamAsset.parse(from: fileName, record: record, asset: asset)
                 } else if let owner = record.value(forKey: prop.name) as? CKRecord.Reference,
                     let ownerType = prop.objectClassName,
                     let schema = realm.schema.objectSchema.first(where: { $0.className == ownerType })
