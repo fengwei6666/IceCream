@@ -91,6 +91,12 @@ public enum Notifications: String, NotificationName {
     case cloudKitDataDidChangeRemotely
     case cloudKitRecordDidStoreLocally
     case cloudKitInitialFetchRecordZoneChangesCompletion
+    
+    case cloudKitDidStartFetch
+    case cloudKitDidFinishFetch
+    
+    case cloudKitDidStartUpload
+    case cloudKitDidFinishUpload
 }
 
 public enum IceCreamKey: String {

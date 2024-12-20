@@ -62,6 +62,7 @@ final class PrivateDatabaseManager: DatabaseManager {
         }
         
         database.add(changesOperation)
+        NotificationCenter.default.post(name: Notifications.cloudKitDidStartFetch.name, object: nil)
     }
     
     func createCustomZonesIfAllowed() {
@@ -189,6 +190,9 @@ final class PrivateDatabaseManager: DatabaseManager {
                 $0.resolvePendingRelationships()
             }
             callback?(error)
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notifications.cloudKitDidFinishFetch.name, object: nil)
+            }
         }
         
         database.add(changesOp)

@@ -90,7 +90,9 @@ extension DatabaseManager {
     /// For more about the savePolicy: https://developer.apple.com/documentation/cloudkit/ckrecordsavepolicy
     public func syncRecordsToCloudKit(recordsToStore: [CKRecord], recordIDsToDelete: [CKRecord.ID], completion: ((Error?) -> ())? = nil) {
         let modifyOpe = CKModifyRecordsOperation(recordsToSave: recordsToStore, recordIDsToDelete: recordIDsToDelete)
-        
+        let uploadingKey = UUID().uuidString
+        NotificationCenter.default.post(name: Notifications.cloudKitDidStartUpload.name, object: uploadingKey)
+
         if #available(iOS 11.0, OSX 10.13, tvOS 11.0, watchOS 4.0, *) {
             let config = CKOperation.Configuration()
             config.isLongLived = true
@@ -119,6 +121,7 @@ extension DatabaseManager {
             case .success:
                 DispatchQueue.main.async {
                     completion?(nil)
+                    NotificationCenter.default.post(name: Notifications.cloudKitDidFinishUpload.name, object: uploadingKey)
                 }
             case .retry(let timeToWait, _):
                 ErrorHandler.shared.retryOperationIfPossible(retryAfter: timeToWait) {
