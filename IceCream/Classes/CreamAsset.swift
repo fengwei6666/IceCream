@@ -135,6 +135,7 @@ public class CreamAsset: Object {
     /// - Returns: The CreamAsset if creates successful
     public static func create(objectID: String, propName: String, url: URL, shouldOverwrite: Bool = true) -> CreamAsset? {
         let creamAsset = CreamAsset(objectID: objectID, propName: propName)
+        print("===== ckrecord fileURL: \(url) === \(creamAsset.filePath)")
         if shouldOverwrite, FileManager.default.fileExists(atPath: creamAsset.filePath.path) {
             do {
                 try FileManager.default.removeItem(at: creamAsset.filePath)
@@ -143,6 +144,32 @@ public class CreamAsset: Object {
             }
         }
         if !FileManager.default.fileExists(atPath: creamAsset.filePath.path) {
+            logFileAtt(url)
+            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                CreamAsset.logFileAtt(url)
+            }
+            DispatchQueue.global().asyncAfter(deadline: .now() + 2) {
+                CreamAsset.logFileAtt(url)
+            }
+            DispatchQueue.global().asyncAfter(deadline: .now() + 3) {
+                CreamAsset.logFileAtt(url)
+            }
+            DispatchQueue.global().asyncAfter(deadline: .now() + 5) {
+                CreamAsset.logFileAtt(url)
+            }
+            DispatchQueue.global().asyncAfter(deadline: .now() + 10) {
+                CreamAsset.logFileAtt(url)
+            }
+            DispatchQueue.global().asyncAfter(deadline: .now() + 20) {
+                CreamAsset.logFileAtt(url)
+            }
+            DispatchQueue.global().asyncAfter(deadline: .now() + 30) {
+                CreamAsset.logFileAtt(url)
+            }
+            DispatchQueue.global().asyncAfter(deadline: .now() + 60) {
+                CreamAsset.logFileAtt(url)
+            }
+
             do {
                 try FileManager.default.copyItem(at: url, to: creamAsset.filePath)
             } catch {
@@ -151,6 +178,17 @@ public class CreamAsset: Object {
             }
         }
         return creamAsset
+    }
+    
+    static func logFileAtt(_ url: URL) {
+        if url.isFileURL {
+            let att = try? FileManager.default.attributesOfItem(atPath: url.path)
+            print("===== ckrecord fileInfo: \n")
+            print("===== filePath:\(url.path) \n")
+            print("===== isExist:\(FileManager.default.fileExists(atPath: url.path)) \n")
+            print("===== fileSize:\(String(describing: att?[FileAttributeKey.size])) \n")
+            print("===== ckrecord fileInfo: \n\n")
+        }
     }
 }
 
