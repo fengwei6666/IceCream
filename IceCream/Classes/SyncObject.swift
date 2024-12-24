@@ -82,7 +82,7 @@ extension SyncObject: Syncable {
     
     public func add(record: CKRecord) {
         BackgroundWorker.shared.start {
-            print("===== ckrecord download: find new record: \(record.recordType) === \(record.recordID)")
+//            print("===== ckrecord download: find new record: \(record.recordType) === \(record.recordID)")
 
             let realm = try! Realm(configuration: self.realmConfiguration)
             guard let object = T.parseFromRecord(
@@ -111,7 +111,7 @@ extension SyncObject: Syncable {
             }
             NotificationCenter.default.post(name: Notifications.cloudKitRecordDidStoreLocally.name, object: object)
             
-            print("===== ckrecord download: added new record: \(record.recordType) === \(record.recordID)")
+//            print("===== ckrecord download: added new record: \(record.recordType) === \(record.recordID)")
         }
     }
     
