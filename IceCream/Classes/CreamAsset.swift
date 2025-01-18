@@ -18,7 +18,7 @@ import CloudKit
 /// We choose the latter, that's storing it directly on the file system, storing paths to these files in the Realm.
 /// So this is the deal.
 public class CreamAsset: Object {
-    @Persisted private(set) var uniqueFileName = ""
+    @Persisted public var uniqueFileName = ""
     override public static func ignoredProperties() -> [String] {
         return ["filePath"]
     }
@@ -52,7 +52,7 @@ public class CreamAsset: Object {
     // MARK: - CKRecordConvertible & CKRecordRecoverable
     
     /// Wrap asset as CKAsset for uploading to CloudKit
-    var asset: CKAsset {
+    public var asset: CKAsset {
         get {
             return CKAsset(fileURL: filePath)
         }
@@ -65,7 +65,7 @@ public class CreamAsset: Object {
     ///   - record: The CKRecord where we will pull the record ID off of to locate/store the file
     ///   - asset: The CKAsset where we will pull the URL for creating the asset
     /// - Returns: A CreamAsset if it was successful
-    static func parse(from propName: String, record: CKRecord, asset: CKAsset) -> CreamAsset? {
+    public static func parse(from propName: String, record: CKRecord, asset: CKAsset) -> CreamAsset? {
         guard let url = asset.fileURL else { return nil }
         return CreamAsset.create(objectID: record.recordID.recordName,
                                  propName: propName,
