@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = '3.0'
   s.source_files = ["IceCream/Classes/**/*","IceCream/IceCream.h"]
   s.public_header_files = ["IceCream/IceCream.h"]
-  s.static_framework = true
+#  s.static_framework = true
   s.swift_version = '5.0'
 
   s.dependency 'RealmSwift'
